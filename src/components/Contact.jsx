@@ -17,7 +17,7 @@ function Contact() {
     const errorNotify = () => {
         toast.error("Failed to send the message. Please try again.", {
             position: "bottom-center",
-            autoClose: 3000,
+            autoClose: 4000,
           });         
     }
 
@@ -26,7 +26,7 @@ function Contact() {
         
         emailjs
           .sendForm('service_wn070bt', 'template_t7w161d', form.current, {
-            publicKey: '',//F8hZ0-uptWQ0xoiKv
+            publicKey: 'F8hZ0-uptWQ0xoiKv',
           })
           .then(
             () => {
@@ -39,7 +39,7 @@ function Contact() {
       };
 
   return (
-    <div className="lg:w-[48rem] md:w-[38rem]  p-18 bg-white rounded-2xl shadow-2xl">
+    <div className="lg:w-[48rem] md:w-[38rem] max-[490px]:w-[20rem] p-18 bg-white rounded-2xl shadow-2xl">
         <form ref={form} onSubmit={sendEmail} className=" p-10 gap-4 flex flex-col">
         <label  className="text-sm font-semibold">Name :</label>
         <input type="text" name='user_name' placeholder="Enter Your Name"  className=" px-10 py-4 rounded-md bg-slate-100"/><br />
