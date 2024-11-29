@@ -81,7 +81,7 @@ function App() {
         <a href="#home" className="ease-out p-4"><IoIosArrowUp/></a>
       </div>
       {/* Home */}
-      <section className="h-[38rem] pt-20  flex flex-col bg-background bg-current  justify-center items-center  " id="home" >
+      <section className="h-[38rem] pt-20  flex flex-col bg-white bg-current  justify-center items-center  " id="home" >
         <div className="text-center container  ">
           <p className="text-6xl font-extrabold font-f3 text-center  mb-10">HEY, I'M <span className="text-[#7843E9]">JAGADEESH CHAKALI</span></p>
           <p className="text-2xl text-center font-f3 px-18 mt-4 ">I'm a computer enginering student and a MERN developer.</p>
