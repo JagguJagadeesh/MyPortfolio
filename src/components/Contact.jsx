@@ -29,11 +29,11 @@ function Contact() {
             publicKey: 'F8hZ0-uptWQ0xoiKv',
           })
           .then(
-            () => {
+            (d) => {
                 successNotify();
             },
-            (error) => {
-                errorNotify();
+            (e) => {
+                errorNotify(e);
             },
           );
       };

@@ -1,18 +1,16 @@
-import { useState , useEffect } from "react";
+import { useState  } from "react";
 import Footer from "./components/Footer"
 import Contact from "./components/Contact";
+import ProjectCard from "./components/ProjectCard";
 
 // Links
-import { FaGithub , FaLinkedin , FaInstagramSquare , FaCode } from "react-icons/fa";
+import { FaGithub , FaLinkedin , FaInstagramSquare  } from "react-icons/fa";
 import { IoIosArrowUp } from "react-icons/io";
 import { FaSquareXTwitter  } from "react-icons/fa6";
 import { BsList } from "react-icons/bs";
 import { SiLeetcode } from "react-icons/si";
 import { CiMail } from "react-icons/ci";
 
-// Projects images
-import Iotsolutins1 from "./assets/iotsolutions1 (1).jpg"
-import Iotsolutins2 from "./assets/iotsolutions1 (2).jpg"
 // Images
 import ProfilePic from "./assets/jaggu-logo.png" 
 import SkillReact from './assets/skill-react.svg'
@@ -24,23 +22,16 @@ import Skillsql from './assets/skill-postgresql.svg'
 import Skillmdb from './assets/skill-mongodb.svg'
 import Skillexpress from './assets/skill-express-js.svg'
 import Skilljava from './assets/skill-java.svg'
+
 // My CV
-import Cv from "./assets/Cv.pdf"
-const images = [Iotsolutins1,Iotsolutins2];
+import Cv from "./assets/JAGADEESH CHAKALI.pdf"
+import { data } from './data'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [imageIndex, setImageIndex] = useState(0);
+  console.log(data)
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
-    }, 10000);
-
-    // Cleanup the interval on unmount
-    return () => clearInterval(interval);
-  }, [images.length]); 
-
+  
   return (
     <div className="bg-white flex flex-col ">
       {/* Navbar */}
@@ -86,8 +77,8 @@ function App() {
       {/* Home */}
       <section className=" pb-20 pt-20  flex flex-col bg-white bg-current  justify-center items-center  " id="home" >
         <div className="text-center container text-wrap  ">
-          <p className="text-6xl font-extrabold font-f3 text-center  mb-10">HEY, I'M <span className="text-[#7843E9]">JAGADEESH CHAKALI</span></p>
-          <p className="text-2xl text-center font-f3 px-18 mt-4 ">I'm a computer enginering student and a MERN developer.</p>
+          <p className="text-6xl font-extrabold font-f3 text-center  mb-10">HEY, I`M <span className="text-[#7843E9]">JAGADEESH CHAKALI</span></p>
+          <p className="text-2xl text-center font-f3 px-18 mt-4 ">I`m a computer enginering student and a MERN developer.</p>
         </div>
         <a className=" mt-20 px-24 max-[490px]:px-10 py-3 text-xl rounded-lg border-solid text-white border-2 border-black bg-[#7843E9] hover:bg-[#8653f2]" href={Cv} download="Jagadeesh_CV" role="button">Download CV</a>
       </section>
@@ -151,19 +142,12 @@ function App() {
       </section>
       {/* Projects */}
       <section className="p-10 px-14 py-20 " id="projects">
-        <div className="text-center  container font-f3 font-bold text-6xl"><p>Projects</p><p className="font-f3 text-4xl font-normal text-[#7843E9]">---</p></div>
-        <br /><br />
-        <div className="flex flex-col">
-          <div className="  flex p-2 max-[490px]:flex-col  ">
-            <div className="  px-4">
-              <img src={images[imageIndex]}  className="w-[790px]  rounded-lg h-96" alt="kjnx" />
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2 w-full h-full">
+          {data.length >0 ? data.map((d,i)=>(
+            <div key={i}>
+              <ProjectCard title={d.title} img={d.imgul} des={d.des} gitlink={d.git} view={d.view} />
             </div>
-            <div className=" container text-wrap p-4  px-4">
-              <p className="text-4xl font-extrabold font-f3">IotSolutions</p><br />
-              <p className=" text-xl font-medium font-f3">IoT Solutions, your one-stop online store for cutting-edge Internet of Things (IoT) devices! Discover a wide range of smart gadgets, from home automation systems and wearable tech to industrial IoT solutions, all designed to simplify and enhance your life. Our curated collection features the latest innovations, ensuring top quality, reliability, and seamless connectivity. Enjoy hassle-free shopping with detailed product guides, secure checkout, and fast delivery!</p>
-              <a href="https://github.com/JagguJagadeesh/IOT_Solutions" target="_blank"  ><FaCode className="text-4xl w-20 mt-4 shadow-xl border-black rounded-lg border-s-2 border-b-2    " /></a>
-            </div>
-          </div>
+          )):<p>Projects are Loading...</p>}
         </div>
       </section>
       {/* Contact */}
