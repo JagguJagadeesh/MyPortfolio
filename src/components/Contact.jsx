@@ -1,57 +1,105 @@
-import React, { useRef } from 'react'
-import emailjs from '@emailjs/browser';
+import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import emailjs from "@emailjs/browser";
 import { ToastContainer, toast } from "react-toastify";
+import { motion } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 
+const schema = z.object({
+  user_name: z.string().min(2, "Name must be at least 2 characters"),
+  user_email: z.string().email("Invalid email address"),
+  message: z.string().min(15, "Message must be at least 10 characters"),
+});
 
-function Contact() {
-    const form = useRef();
+const Contact = () => {
+  const formRef = useRef();
 
-    const successNotify = () => {
-        toast.success("Successfully Message sent!", {
-            position: "bottom-center",
-            autoClose: 4000,
-            icon: "🚀",
-          });          
-    }
-    const errorNotify = () => {
-        toast.error("Failed to send the message. Please try again.", {
-            position: "bottom-center",
-            autoClose: 4000,
-          });         
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
-    const sendEmail = (e) => {
-        e.preventDefault();
-        
-        emailjs
-          .sendForm('service_hc3ocn5', 'template_t7w161d', form.current, {
-            publicKey: 'F8hZ0-uptWQ0xoiKv',
-          })
-          .then(
-            (d) => {
-                successNotify();
-            },
-            (e) => {
-                errorNotify(e);
-            },
-          );
-      };
+  const notifySuccess = () => toast.success("Message sent successfully 🚀", { position: "bottom-center" });
+  const notifyFail = () => toast.error("Message failed. Try again.", { position: "bottom-center" });
+
+  const sendEmail = () => {
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        {
+          publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+        }
+      )
+      .then(() => {
+        notifySuccess();
+        reset();
+      }, notifyFail);
+  };
 
   return (
-    <div className="lg:w-[48rem] md:w-[38rem] max-[490px]:w-[20rem] p-18 bg-white rounded-2xl shadow-2xl">
-        <form ref={form} onSubmit={sendEmail} className=" p-10 gap-4 flex flex-col">
-        <label  className="text-sm font-semibold">Name :</label>
-        <input type="text" name='user_name' placeholder="Enter Your Name"  className=" px-10 py-4 rounded-md bg-slate-100"/><br />
-        <label  className="text-sm font-semibold">Gmail :</label>
-        <input type="text" name='user_email' placeholder="Enter Your Gmail" className=" px-10 py-4 rounded-md bg-slate-100" /><br />
-        <label htmlFor="message" className="text-sm font-semibold">Massage :</label>
-        <textarea placeholder="Enter Your Message" name='message' className="p-4 rounded-md bg-slate-100" rows={8} ></textarea><br />
-        <input type="submit" value="Submit" className=" cursor-pointer rounded-lg border-black border-2 border-solid bg-[#7843E9] hover:bg-[#ae7eff] text-white py-4 text-xl" />
-        </form>
-        <ToastContainer/>
-    </div>
-  )
-}
+    <motion.div
+      className="w-full max-w-2xl mx-auto backdrop-blur-md bg-white/70 dark:bg-zinc-950/70
+ dark:bg-zinc-900 rounded-xl shadow-2xl p-8 border border-zinc-200 dark:border-zinc-700"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+    >
+      <form ref={formRef} onSubmit={handleSubmit(sendEmail)} className="space-y-5">
+        <div>
+          <label className="text-lg font-semibold text-zinc-800 dark:text-zinc-100">Name</label>
+          <input
+            {...register("user_name")}
+            className="w-full mt-2 px-4 py-3 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:ring-2 focus:ring-[#7843E9]"
+            placeholder="Your Name"
+          />
+          {errors.user_name && (
+            <p className="text-sm text-red-500 mt-1">{errors.user_name.message}</p>
+          )}
+        </div>
 
-export default Contact
+        <div>
+          <label className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Email</label>
+          <input
+            {...register("user_email")}
+            className="w-full mt-2 px-4 py-3 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:ring-2 focus:ring-[#7843E9]"
+            placeholder="you@example.com"
+          />
+          {errors.user_email && (
+            <p className="text-sm text-red-500 mt-1">{errors.user_email.message}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">Message</label>
+          <textarea
+            {...register("message")}
+            rows="5"
+            className="w-full mt-2 px-4 py-3 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 outline-none focus:ring-2 focus:ring-[#7843E9]"
+            placeholder="Your message..."
+          />
+          {errors.message && (
+            <p className="text-sm text-red-500 mt-1">{errors.message.message}</p>
+          )}
+        </div>
+
+        <input
+          type="submit"
+          value="Submit"
+          className="cursor-pointer w-full py-3 text-white bg-violet-600 hover:bg-violet-700 rounded text-2xl dark:border-white"
+        />
+      </form>
+
+      <ToastContainer />
+    </motion.div>
+  );
+};
+
+export default Contact;

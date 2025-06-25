@@ -1,168 +1,256 @@
-import { useState  } from "react";
-import Footer from "./components/Footer"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Footer from "./components/Footer";
 import Contact from "./components/Contact";
-import ProjectCard from "./components/ProjectCard";
+import Projects from "./components/Projects.jsx";
+import Sidebar from "./components/Sidebar";
+import { Typewriter } from 'react-simple-typewriter';
 
-// Links
-import { FaGithub , FaLinkedin , FaInstagramSquare  } from "react-icons/fa";
-import { IoIosArrowUp } from "react-icons/io";
-import { FaSquareXTwitter  } from "react-icons/fa6";
 import { BsList } from "react-icons/bs";
-import { SiLeetcode } from "react-icons/si";
-import { CiMail } from "react-icons/ci";
+import { BiMoon, BiSun } from "react-icons/bi";
 
-// Images
-import ProfilePic from "./assets/jaggu-logo.png" 
-import SkillReact from './assets/skill-react.svg'
-import SkillHTML from './assets/skill-html.svg'
-import Skillcss from './assets/skill-css.svg'
-import Skilljs from './assets/skill-js.svg'
-import Skillnode from './assets/skill-nodejs.svg'
-import Skillsql from './assets/skill-postgresql.svg'
-import Skillmdb from './assets/skill-mongodb.svg'
-import Skillexpress from './assets/skill-express-js.svg'
-import Skilljava from './assets/skill-java.svg'
+import ProfilePic from "./assets/jaggu-logo.png";
+import Cv from "./assets/CV.pdf";
 
-// My CV
-import Cv from "./assets/JAGADEESH CHAKALI.pdf"
-import { data } from './data'
+import Achievements from "./components/Achivements.jsx";
+import { FaPhone } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import SkillsCarousel from "./components/SkillsCarousel.jsx";
+import Hero3DCard from "./components/Hero3DCard.jsx";
 
-function App() {
+const navItems = ["Home", "About", "Projects", "Contact"];
+
+
+export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  console.log(data)
+  const [isDark, setIsDark] = useState(false);
 
-  
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === "dark") {
+      setIsDark(true);
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDark]);
+
+  const roles = ['JAGADEESH', 'a Coder', 'a Learner', 'a Explorer'];
+
+
+
   return (
-    <div className="bg-white flex flex-col ">
+    <div className="font-turret  dark:bg-zinc-950 text-zinc-900 dark:text-white scroll-smooth">
       {/* Navbar */}
-      <div className="w-screen h-20 fixed flex flex-shrink items-center opacity-85 bg-black text-white">
-        <div className="flex gap-4 pl-8 items-center w-full md:w-auto">
-          <img src={ProfilePic} alt="Profilepic" className="w-12 h-12  rounded" />
-          <a href="#home">
-            <p className="text-3xl sm:w-[24rem] flex-grow lg:w-[52rem] max-[490px]:text-xl font-bold  font-f2">Jagadeesh Chakali</p>
+      <header className="fixed top-0 w-full z-50 opacity-90 bg-violet-600 text-black shadow-2xl">
+        <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-8">
+          <div className="flex items-center gap-3">
+            <img src={ProfilePic} alt="Profile" className="w-10 h-10 border border-dotted rounded" />
+            <a href="#home">
+              <p className="text-xl sm:text-2xl font-bold hover:text-white transition">Jagadeesh Chakali</p>
+            </a>
+          </div>
+
+          <nav className="hidden md:flex gap-8 text-lg">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="hover:text-white font-semibold transition-colors duration-200"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <button className="md:hidden text-3xl" onClick={() => setMenuOpen(!menuOpen)}>
+              <BsList />
+            </button>
+            <button
+              className="ml-2 hidden md:flex items-center gap-1 text-sm border px-2 py-1.5 rounded-lg hover:text-white transition"
+              onClick={() => setIsDark((prev) => !prev)}
+            >
+              {isDark ? <BiSun size={23} /> : <BiMoon size={23} />}
+            </button>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute right-4 top-20 w-48 bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-white backdrop-blur-md rounded-xl shadow-lg z-50 border border-zinc-300 dark:border-zinc-700"
+            >
+              <div className="flex flex-col items-center py-4 gap-2">
+                {navItems.map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-center px-4 py-2 text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition"
+                  >
+                    {item}
+                  </a>
+                ))}
+                <button
+                  onClick={() => {
+                    setIsDark((prev) => !prev);
+                    setMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-zinc-800 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition"
+                >
+                  {isDark ? <BiSun className="text-lg" /> : <BiMoon className="text-lg" />}
+                  {isDark ? "Light Mode" : "Dark Mode"}
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Home Section */}
+      <section
+        id="home"
+        className="relative flex flex-col-reverse md:flex-row items-center justify-center gap-12 px-6 pt-28 pb-16 text-center md:text-left overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#7843E9]/30 via-transparent to-[#6c30f7]/10 blur-3xl -z-10" />
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-xl"
+        >
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight text-zinc-900 dark:text-white">
+            HEY, I&apos;M{" "}
+            <span className="text-[#7843E9]">
+              <Typewriter
+                words={roles}
+                loop
+                cursor
+                cursorStyle="_"
+                typeSpeed={150}
+                deleteSpeed={50}
+                delaySpeed={1500}
+              />
+            </span>
+          </h1>
+          <p className="text-lg sm:text-xl mb-8 text-zinc-700 dark:text-zinc-300">
+            MERN Stack Developer and Computer Engineering Student with a passion for building fast, responsive, and modern web applications.
+          </p>
+          <a
+            href={Cv}
+            download="Jagadeesh_CV"
+            className="inline-block px-8 py-3 bg-[#7843E9] text-white font-semibold shadow-lg hover:bg-[#6c30f7] transition transform hover:scale-105"
+          >
+            Download CV
           </a>
-        </div>
+        </motion.div>
 
-        <div className="hidden md:flex items-center gap-6 pr-14 text-xl">
-          <a className="hover:underline rounded-full text-center px-1" href="#home">Home</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#about">About</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#projects">Projects</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#contact">Contact</a>
-        </div>
-        <button className="text-white text-4xl mr-8 md:hidden max-[490px]:p-1 max-[490px]:mr-2 p-6" onClick={() => setMenuOpen(!menuOpen)}>
-          <BsList />
-        </button>
-        {menuOpen && (
-        <div className="absolute top-20 left-0 w-full bg-black text-white opacity-75 text-opacity-100 flex flex-col items-center text-xl gap-4 py-4">
-          <a className="hover:underline rounded-full text-center px-1" href="#home">Home</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#about" onClick={() => setMenuOpen(false)}>About</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#projects" onClick={() => setMenuOpen(false)}>Projects</a>
-          <a className="hover:underline rounded-full text-center px-1" href="#contact" onClick={() => setMenuOpen(false)}>Contact</a>
-        </div>
-      )}
-      </div>
-      {/* Side bar */}
-      <div className="w-14 max-[490px]:w-10 max-[490px]:p-2 p-4 text-white opacity-85 bg-[#7843E9] flex flex-col gap-8 rounded-lg  fixed left-1 top-1/4 ">
-        <a href="https://github.com/JagguJagadeesh"  target='_blank'><FaGithub className='text-3xl max-[490px]:text-xl '/></a>
-        <a href='https://www.linkedin.com/in/jagadeesh15/' target='_blank'><FaLinkedin className='text-3xl max-[490px]:text-xl'/></a>
-        <a href='https://x.com/JagguJagadieesh' target='_blank'><FaSquareXTwitter className='text-3xl max-[490px]:text-xl'/></a>
-        <a href='https://leetcode.com/u/Jagadeesh02/' target='_blank'><SiLeetcode className='text-3xl max-[490px]:text-xl'/></a>
-        <a href='https://www.instagram.com/j.a.g.a.d.e.e.s.h_15/' target='_blank'><FaInstagramSquare className='text-3xl max-[490px]:text-xl'/></a>
-        <a href='mailto:jaggujagadeesh447@gmail.com' ><CiMail className='text-3xl max-[490px]:text-xl'/></a>
-      </div>
-      {/* Scroll UP */}
-      <div className="w-14 h-14  flex rounded-full opacity-85 bg-[#7843E9] text-white text-2xl max-[460px]:w-8  items-center justify-center fixed right-10 bottom-10">
-        <a href="#home" className="ease-out p-4"><IoIosArrowUp/></a>
-      </div>
-      {/* Home */}
-      <section className=" pb-20 pt-20  flex flex-col bg-white bg-current  justify-center items-center  " id="home" >
-        <div className="text-center container text-wrap  ">
-          <p className="text-6xl font-extrabold font-f3 text-center  mb-10">HEY, I`M <span className="text-[#7843E9]">JAGADEESH CHAKALI</span></p>
-          <p className="text-2xl text-center font-f3 px-18 mt-4 ">I`m a computer enginering student and a MERN developer.</p>
-        </div>
-        <a className=" mt-20 px-24 max-[490px]:px-10 py-3 text-xl rounded-lg border-solid text-white border-2 border-black bg-[#7843E9] hover:bg-[#8653f2]" href={Cv} download="Jagadeesh_CV" role="button">Download CV</a>
+        <Hero3DCard />
       </section>
-      {/* My Skills */}
-      <section className=" p-10 ">
-        <div className="text-center  mb-4 container font-f3 font-bold text-6xl"><p>My Skills</p><p className="font-f3 text-4xl font-normal text-[#7843E9]">---</p></div>
-        <br />
-        <div className=" flex flex-wrap justify-center  gap-14 ">
-        <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skilljava} alt="Skill" className='w-36 h-20' />
-            <p>Java</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={SkillHTML} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>Html</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skillcss} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>CSS</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skilljs} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>JavaScript</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={SkillReact} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>React js</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skillnode} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>Node js</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skillexpress} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>Express js</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skillmdb} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>MongoDB</p>
-          </div>
-          <div className='flex flex-col items-center p-2 gap-1  '>
-            <img src={Skillsql} alt="Skill" className='w-36 max-[490px]:w-16 h-20' />
-            <p>PostgreSQL</p>
+
+      {/* Skills Section */}
+      <SkillsCarousel />
+
+      {/* About Section */}
+      <section id="about" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-5xl  mx-auto break-words">
+          <h2 className="text-3xl sm:text-4xl font-bold">ABOUT ME</h2>
+          <p className="text-[#7843E9] text-xl sm:text-2xl mt-2">---</p>
+
+          <p className="text-base sm:text-lg mt-4 text-violet-600 leading-relaxed break-words whitespace-normal">
+            I&apos;m a passionate and dedicated full-stack developer who thrives on solving problems and bringing ideas to life through code.
+          </p>
+
+          <div className="mt-8 sm:mt-10 text-left space-y-6 text-base sm:text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed break-words whitespace-normal">
+            <p>
+              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
+              I specialize in building dynamic, responsive, and performant web applications using the <strong>MERN Stack</strong> (MongoDB, Express.js, React.js, Node.js). From intuitive user interfaces to robust backend systems, I enjoy crafting every part of a digital product.
+            </p>
+            <p>
+              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
+              I’m currently pursuing a degree in Computer Engineering, which strengthens my problem-solving abilities and understanding of system-level design, algorithms, and data structures.
+            </p>
+            <p>
+              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
+              Apart from coding, I continuously explore new technologies, keep up with industry trends, and enjoy creating content around web development and software engineering. I also actively engage with the developer community through LinkedIn and X.
+            </p>
+            <p>
+              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
+              When I’m not coding, you’ll find me exploring open-source projects, writing clean documentation, or helping others on their coding journey.
+            </p>
+            <p>
+              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
+              I’m always open to new challenges, whether it&apos;s collaborating on exciting projects, contributing to innovative teams, or building something meaningful from the ground up.
+            </p>
           </div>
         </div>
       </section>
-      {/* About */}
-      <section className=" py-20 flex flex-col justify-center items-center pb-20 " id="about">
-        <div className="text-center container text-wrap w-[56rem] max-[490px]:w-40">
-          <p className="font-f3 font-bold text-6xl">ABOUT ME</p>
-          <p className="font-f3 text-4xl text-[#7843E9]">---</p>
-          <p className="font-f3 text-2xl max-[490px]:text-lg ">Here you will find more information about me, what I do, and my current skills mostly in terms of programming and technology</p>
-        </div><br />
-        <div className="container px-20 pt-10  ">
-          <p className="font-semibold text-4xl">Get to know me!</p><br />
-          <p className="font-f3 text-2xl">I'm a <span className="font-semibold">MERN Stack Developer</span> building and managing the Front-end and Back-end of Websites and Web Applications that leads to the success of the overall product. Check out some of my work in the <span className="underline text-[#6810ff]"><a href="#projects">Projects</a></span> section.</p><br />
-          <p className="font-f3 text-2xl">I also like sharing content related to the stuff that I have learned over the years in Web Development so it can help other people of the Dev Community. Feel free to Connect or Follow me on my <span className="underline text-[#6810ff]"><a href="https://www.linkedin.com/in/jagadeesh15/">Linkedin</a></span> and <span className="underline text-[#6810ff]"><a href="https://x.com/JagguJagadieesh">X</a></span> where I post useful content related to Web Development and Programming</p><br />
-          <p className="font-f3 text-2xl">I'm open to Job opportunities where I can contribute, learn and grow. If you have a good opportunity that matches my skills and experience then don't hesitate to Contact me.</p>
-        </div>
-        <a href="#contact" className="bg-[#7843E9] text-white mt-20 px-24 max-[490px]:px-10 py-3 border-black border-2 border-solid text-xl rounded-lg hover:bg-[#ae7eff]">Contact</a>
-      </section>
+
       {/* Projects */}
-      <section className="p-10 px-14 py-20 " id="projects">
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2 w-full h-full">
-          {data.length >0 ? data.map((d,i)=>(
-            <div key={i}>
-              <ProjectCard title={d.title} img={d.imgul} des={d.des} gitlink={d.git} view={d.view} />
-            </div>
-          )):<p>Projects are Loading...</p>}
-        </div>
-      </section>
-      {/* Contact */}
-      <section className=" pt-20 pb-20 bg-opacity-90 flex flex-col justify-center items-center bg-background  easy-linear delay-200" id="contact">
-        <div className="text-center mb-10 container text-wrap w-[56rem] max-[490px]:w-[20rem]">
-          <p className="font-f3 font-bold text-6xl">Contact</p>
-          <p className="font-f3 text-4xl text-[#7843E9]">---</p>
-          <p className="font-f3 text-2xl ">Feel free to Contact me by submitting the form below and I will get back to you as soon as possible</p>
-        </div>
-        <Contact/>
-      </section>
-      <Footer />
-      
-    </div>
-  )
-}
+      <Projects />
 
-export default App
+      {/* Achievements */}
+      <Achievements />
+
+      {/* Contact Section */}
+      <section id="contact" className="px-6 py-20 dark:bg-zinc-950 text-center">
+        <h2 className="text-4xl font-bold mb-4">Contact</h2>
+        <p className="text-[#7843E9] text-2xl">---</p>
+        <div className="text-center mb-10 space-y-2">
+          <p className="text-xl text-zinc-800 dark:text-zinc-300">
+            Feel free to contact me directly:
+          </p>
+
+          {/* Phone */}
+          <div className="flex items-center justify-center gap-2 text-violet-700 font-semibold text-lg sm:text-xl">
+            <FaPhone className="text-lg text-sky-600" />
+            <a
+              href="tel:+917396633113"
+              className="hover:underline underline-offset-2"
+            >
+              +91 73966 33113
+            </a>
+          </div>
+
+          {/* Email */}
+          <div className="flex items-center justify-center gap-2 text-violet-700 font-semibold text-lg sm:text-xl">
+            <MdEmail className="text-2xl text-sky-600" />
+            <a
+              href="mailto:jaggujagadeesh447@gmail.com"
+              className="hover:underline underline-offset-2"
+            >
+              jagadeeshchakali15@gmail.com
+            </a>
+          </div>
+
+          <p className="text-lg text-zinc-700 dark:text-zinc-400">
+            <span className="text-red-500 text-xl font-semibold">Or</span> submit the form below and I will get back to you.
+          </p>
+        </div>
+
+
+
+
+        <Contact />
+      </section>
+
+      {/* Footer */}
+      <Footer />
+    </div>
+  );
+}
