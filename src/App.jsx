@@ -10,7 +10,7 @@ import { BsList } from "react-icons/bs";
 import { BiMoon, BiSun } from "react-icons/bi";
 
 import ProfilePic from "./assets/jaggu-logo.png";
-import Cv from "./assets/CV.pdf";
+import Cv from "../public/CV.pdf";
 
 import Achievements from "./components/Achivements.jsx";
 import { FaPhone } from "react-icons/fa6";
@@ -125,7 +125,7 @@ export default function App() {
       {/* Home Section */}
       <section
         id="home"
-        className="relative flex flex-col-reverse md:flex-row items-center justify-center gap-12 px-6 pt-28 pb-16 text-center md:text-left overflow-hidden"
+        className="relative flex flex-col-reverse md:flex-row items-center justify-center gap-12 px-6 pt-28 pb-20 text-center md:text-left overflow-hidden"
       >
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#7843E9]/30 via-transparent to-[#6c30f7]/10 blur-3xl -z-10" />
         <motion.div
