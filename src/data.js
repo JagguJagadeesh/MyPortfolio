@@ -11,7 +11,7 @@ export const data = [
   {
     title: "FocusMate",
     imgul: focusemate,
-    des: "FocusMate is a smart healthcare platform that uses IoT sensors to track vitals like temperature, BP, SpO2, ECG, and glucose. It connects via BLE for real-time data sync and cloud access. ML algorithms detect anomalies and send alerts to doctors and patients. Users get clean, intuitive dashboards for tracking trends. Built with React and Node.js, the platform ensures responsive UI and fast performance. It bridges the gap between doctors and remote patients efficiently.",
+    des: "FocusMate is a productivity and focus-enhancing platform with smart task manager It offers features like calendar scheduling, floating mini-timer, task analytics, and AI chatbot assistance,Users can track pending and completed tasks with real-time stats and reminders,Built with React, Next.js, Node.js , TypeScript , and MongoDB for a fast, responsive experience.",
     git: "https://github.com/JagguJagadeesh/FocusMate-BE",
     view: "https://focus-mate-fe.vercel.app/",
   },
