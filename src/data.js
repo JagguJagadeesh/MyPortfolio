@@ -41,7 +41,7 @@ export const data = [
     imgul: blogsimg,
     des: "Blogs is a content publishing platform built with React and Appwrite. Users can register, log in, and write posts using a rich-text editor. Posts are categorized and searchable by tags. Users can like, comment, and manage their own articles. The backend supports database, storage, and authentication through Appwrite. Responsive UI ensures it works well on all screens. It’s a modern, full-featured blogging experience.",
     git: "https://github.com/JagguJagadeesh/Blogs",
-    view: "https://jaggublogs.vercel.app/",
+    view: "https://jaggublogs-8udkdv0ne-jagadeeshs-projects-3d107e09.vercel.app/",
   },
   {
     title: "React Projects",
