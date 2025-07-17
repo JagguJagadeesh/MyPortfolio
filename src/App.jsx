@@ -10,7 +10,7 @@ import { BsList } from "react-icons/bs";
 import { BiMoon, BiSun } from "react-icons/bi";
 
 import ProfilePic from "./assets/jaggu-logo.png";
-import Cv from "../public/CV.pdf";
+import Cv from "../public/JAGADEESH_CHAKALI_RESUME.pdf";
 
 import Achievements from "./components/Achivements.jsx";
 import { FaPhone } from "react-icons/fa6";
@@ -153,7 +153,7 @@ export default function App() {
           </p>
           <a
             href={Cv}
-            download="Jagadeesh_CV"
+            download="Jagadeesh_CHAKALI_RESUME"
             className="inline-block px-8 py-3 bg-[#7843E9] text-white font-semibold shadow-lg hover:bg-[#6c30f7] transition transform hover:scale-105"
           >
             Download CV
