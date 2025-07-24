@@ -4,30 +4,33 @@ import Footer from "./components/Footer";
 import Contact from "./components/Contact";
 import Projects from "./components/Projects.jsx";
 import Sidebar from "./components/Sidebar";
+import CvBtn from "./components/CvBtn.jsx";
 import { Typewriter } from 'react-simple-typewriter';
 
 import { BsList } from "react-icons/bs";
 import { BiMoon, BiSun } from "react-icons/bi";
+import { FaPhone, FaArrowUp } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { HiSparkles } from "react-icons/hi";
 
 import ProfilePic from "./assets/jaggu-logo.png";
-import Cv from "../public/CV.pdf";
-
 import Achievements from "./components/Achivements.jsx";
-import { FaPhone } from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
 import SkillsCarousel from "./components/SkillsCarousel.jsx";
 import Hero3DCard from "./components/Hero3DCard.jsx";
 
 const navItems = ["Home", "About", "Projects", "Contact"];
 
-
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    if (storedTheme === "dark") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
       setIsDark(true);
       document.documentElement.classList.add("dark");
     }
@@ -43,214 +46,477 @@ export default function App() {
     }
   }, [isDark]);
 
-  const roles = ['JAGADEESH', 'a Coder', 'a Learner', 'a Explorer'];
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      setShowScrollTop(window.scrollY > 500);
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuOpen && !event.target.closest('.mobile-menu')) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [menuOpen]);
+
+  const roles = ['JAGADEESH', 'a Coder', 'a Learner', 'an Explorer'];
 
   return (
-    <div className="font-turret  dark:bg-zinc-950 text-zinc-900 dark:text-white scroll-smooth">
+    <div className="font-inter bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white scroll-smooth overflow-x-hidden">
       {/* Navbar */}
-      <header className="fixed top-0 w-full z-50 opacity-90 bg-violet-600 text-black shadow-2xl">
-        <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-8">
-          <div className="flex items-center gap-3">
-            <img src={ProfilePic} alt="Profile" className="w-10 h-10 border border-dotted rounded" />
-            <a href="#home">
-              <p className="text-xl sm:text-2xl font-bold hover:text-white transition">Jagadeesh Chakali</p>
+      <motion.header
+        className="fixed top-0 w-full z-50 shadow-2xl transition-all duration-300"
+        style={{
+          backdropFilter: 'blur(20px)',
+          backgroundColor: scrollY > 50
+            ? 'rgba(255, 255, 255, 0.9)'
+            : 'rgba(255, 255, 255, 0.8)',
+        }}
+        animate={{
+          backgroundColor: isDark
+            ? scrollY > 50
+              ? 'rgba(24, 24, 27, 0.95)'
+              : 'rgba(24, 24, 27, 0.8)'
+            : scrollY > 50
+              ? 'rgba(255, 255, 255, 0.95)'
+              : 'rgba(255, 255, 255, 0.8)',
+          borderColor: scrollY > 50
+            ? isDark ? 'rgba(63, 63, 70, 0.8)' : 'rgba(228, 228, 231, 0.8)'
+            : isDark ? 'rgba(63, 63, 70, 0.3)' : 'rgba(228, 228, 231, 0.3)'
+        }}
+      >
+        <div className="max-w-7xl mx-auto flex justify-between items-center h-16 px-4 sm:px-6 lg:px-8">
+          {/* Logo Section */}
+          <motion.div
+            className="flex items-center gap-3"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <div className="relative">
+              <img
+                src={ProfilePic}
+                alt="Profile"
+                className="w-10 h-10 rounded-lg border-2 border-violet-500 shadow-lg"
+              />
+            </div>
+            <a href="#home" className="group">
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                Jagadeesh Chakali
+              </h1>
             </a>
-          </div>
+          </motion.div>
 
-          <nav className="hidden md:flex gap-8 text-lg">
-            {navItems.map((item) => (
-              <a
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item, index) => (
+              <motion.a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="hover:text-white font-semibold transition-colors duration-200"
+                className="relative py-2 px-4 text-zinc-700 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-all duration-300 rounded-lg group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
               >
                 {item}
-              </a>
+                <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-violet-600 to-purple-600 group-hover:w-8 transition-all duration-300 rounded-full"></span>
+              </motion.a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <button className="md:hidden text-3xl" onClick={() => setMenuOpen(!menuOpen)}>
-              <BsList />
-            </button>
-            <button
-              className="ml-2 hidden md:flex items-center gap-1 text-sm border px-2 py-1.5 rounded-lg hover:text-white transition"
+          {/* Right Side Controls */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <motion.button
               onClick={() => setIsDark((prev) => !prev)}
+              className="hidden md:flex items-center justify-center w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 transition-all duration-300 group"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Toggle theme"
             >
-              {isDark ? <BiSun size={23} /> : <BiMoon size={23} />}
-            </button>
+              <AnimatePresence mode="wait">
+                {isDark ? (
+                  <motion.div
+                    key="sun"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <BiSun className="w-5 h-5 text-amber-500" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="moon"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <BiMoon className="w-5 h-5 text-violet-600" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+
+            {/* Mobile Menu Toggle */}
+            <motion.button
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 transition-all duration-300 mobile-menu"
+              onClick={() => setMenuOpen(!menuOpen)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label="Toggle menu"
+            >
+              <motion.div
+                animate={{ rotate: menuOpen ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <BsList className="w-5 h-5 text-zinc-700 dark:text-zinc-300" />
+              </motion.div>
+            </motion.button>
           </div>
         </div>
 
+        {/* Enhanced Mobile Menu */}
         <AnimatePresence>
           {menuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute right-4 top-20 w-48 bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-white backdrop-blur-md rounded-xl shadow-lg z-50 border border-zinc-300 dark:border-zinc-700"
-            >
-              <div className="flex flex-col items-center py-4 gap-2">
-                {navItems.map((item) => (
-                  <a
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
-                    onClick={() => setMenuOpen(false)}
-                    className="w-full text-center px-4 py-2 text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition"
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
+                onClick={() => setMenuOpen(false)}
+              />
+
+              {/* Menu */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: -20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="absolute right-4 top-20 w-64 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl rounded-2xl shadow-xl border border-zinc-200/50 dark:border-zinc-700/50 overflow-hidden mobile-menu"
+              >
+                <div className="py-2">
+                  {navItems.map((item, index) => (
+                    <motion.a
+                      key={item}
+                      href={`#${item.toLowerCase()}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center px-4 py-3 text-zinc-700 dark:text-zinc-300 hover:bg-violet-50 dark:hover:bg-violet-900/20 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-all duration-200"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      whileHover={{ x: 4 }}
+                    >
+                      <span className="w-2 h-2 bg-violet-500 rounded-full mr-3 opacity-60"></span>
+                      {item}
+                    </motion.a>
+                  ))}
+
+                  <div className="mx-4 my-2 h-px bg-zinc-200 dark:bg-zinc-700"></div>
+
+                  <motion.button
+                    onClick={() => {
+                      setIsDark((prev) => !prev);
+                      setMenuOpen(false);
+                    }}
+                    className="flex items-center w-full px-4 py-3 text-zinc-700 dark:text-zinc-300 hover:bg-violet-50 dark:hover:bg-violet-900/20 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-all duration-200"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    whileHover={{ x: 4 }}
                   >
-                    {item}
-                  </a>
-                ))}
-                <button
-                  onClick={() => {
-                    setIsDark((prev) => !prev);
-                    setMenuOpen(false);
-                  }}
-                  className="flex items-center gap-2 px-4 py-2 mt-1 text-sm font-medium text-zinc-800 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition"
-                >
-                  {isDark ? <BiSun className="text-lg" /> : <BiMoon className="text-lg" />}
-                  {isDark ? "Light Mode" : "Dark Mode"}
-                </button>
-              </div>
-            </motion.div>
+                    <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 mr-3">
+                      {isDark ? (
+                        <BiSun className="w-4 h-4 text-amber-500" />
+                      ) : (
+                        <BiMoon className="w-4 h-4 text-violet-600" />
+                      )}
+                    </div>
+                    <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
-      </header>
+      </motion.header>
 
-      {/* Sidebar */}
+      {/* Enhanced Sidebar */}
       <Sidebar />
 
-      {/* Home Section */}
+      {/* Enhanced Hero Section */}
       <section
         id="home"
-        className="relative flex flex-col-reverse md:flex-row items-center justify-center gap-12 px-6 pt-28 pb-20 text-center md:text-left overflow-hidden"
+        className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center gap-12 px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center lg:text-left overflow-hidden"
       >
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#7843E9]/30 via-transparent to-[#6c30f7]/10 blur-3xl -z-10" />
+
+        <div className="absolute inset-0 -z-10">
+          {/* Floating particles */}
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-violet-400/30 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.3, 0.8, 0.3],
+              }}
+              transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Enhanced Content */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-xl"
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="max-w-2xl z-10"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight text-zinc-900 dark:text-white">
-            HEY, I&apos;M{" "}
-            <span className="text-[#7843E9]">
-              <Typewriter
-                words={roles}
-                loop
-                cursor
-                cursorStyle="_"
-                typeSpeed={150}
-                deleteSpeed={50}
-                delaySpeed={1500}
-              />
-            </span>
-          </h1>
-          <p className="text-lg sm:text-xl mb-8 text-zinc-700 dark:text-zinc-300">
-            MERN Stack Developer and Computer Engineering Student with a passion for building fast, responsive, and modern web applications.
-          </p>
-          <a
-            href={Cv}
-            download="Jagadeesh_CV"
-            className="inline-block px-8 py-3 bg-[#7843E9] text-white font-semibold shadow-lg hover:bg-[#6c30f7] transition transform hover:scale-105"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="mb-8"
           >
-            Download CV
-          </a>
+            <h1 className="text-2xl sm:text-4xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
+              <span className="block mb-2 text-zinc-800 dark:text-zinc-200">HEY, I'M</span>
+              <span className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                <Typewriter
+                  words={roles}
+                  loop
+                  cursor
+                  cursorStyle="_"
+                  typeSpeed={120}
+                  deleteSpeed={80}
+                  delaySpeed={2000}
+                />
+              </span>
+            </h1>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-lg sm:text-xl lg:text-2xl mb-10 text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl"
+          >
+            <span className="font-semibold text-violet-600 dark:text-violet-400">MERN Stack Developer</span> and Computer Engineering Student crafting
+            <span className="text-violet-600 dark:text-violet-400 font-semibold"> fast, responsive, and modern </span>
+            web applications that make a difference.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start"
+          >
+            <CvBtn />
+
+          </motion.div>
+
         </motion.div>
 
-        <Hero3DCard />
+        {/* Enhanced Hero Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+          className="relative z-10"
+        >
+          <Hero3DCard />
+        </motion.div>
       </section>
 
-      {/* Skills Section */}
-      <SkillsCarousel />
+      {/* Enhanced Skills Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <SkillsCarousel />
+      </motion.div>
 
-      {/* About Section */}
-      <section id="about" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-5xl  mx-auto break-words">
-          <h2 className="text-3xl sm:text-4xl font-bold">ABOUT ME</h2>
-          <p className="text-[#7843E9] text-xl sm:text-2xl mt-2">---</p>
+      {/* Your existing About Section (already enhanced) */}
+      <section id="about" className="py-24 px-6 lg:px-12 bg-white dark:bg-zinc-950">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
 
-          <p className="text-base sm:text-lg mt-4 text-violet-600 leading-relaxed break-words whitespace-normal">
-            I&apos;m a passionate and dedicated full-stack developer who thrives on solving problems and bringing ideas to life through code.
-          </p>
+          {/* Left: Intro & Highlights */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">
+              Hi, I’m Jagadeesh Chakali
+            </h2>
+            <div className="w-14 h-1 bg-violet-600 rounded mb-4"></div>
+            <p className="text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed">
+              A final-year <span className="font-semibold text-violet-600">B.Tech (CSE, IoT)</span> student at G. Pullaiah College, graduating in <span className="font-medium">2025</span>. I build full‑stack web apps and IoT solutions—combining <span className="font-medium text-violet-600">React.js</span>, <span className="font-medium text-violet-600">Node.js</span>, and <span className="font-medium text-violet-600">MongoDB</span>—to solve real‑world problems.
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-zinc-600 dark:text-zinc-300">
+              <li> Developed & deployed 3+ full‑stack apps (FocusMate, StayFinder, JagguBlogs)</li>
+              <li> Runner‑up at GDSC Hackathon (30+ teams)</li>
+              <li> Completed Udemy Full‑Stack Bootcamp & NPTEL Cloud/IIoT courses</li>
+              <li> Java Developer Intern – Amaravathi Institute (Jan–Mar ’24)</li>
+            </ul>
+            <motion.a
+              href="#contact"
+              className="inline-block mt-6 px-8 py-3 bg-violet-600 text-white font-medium rounded-lg shadow hover:bg-violet-700 transition"
+              whileHover={{ scale: 1.05 }}
+            >
+              Let’s Connect
+            </motion.a>
+          </motion.div>
 
-          <div className="mt-8 sm:mt-10 text-left space-y-6 text-base sm:text-lg text-zinc-800 dark:text-zinc-300 leading-relaxed break-words whitespace-normal">
-            <p>
-              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
-              I specialize in building dynamic, responsive, and performant web applications using the <strong>MERN Stack</strong> (MongoDB, Express.js, React.js, Node.js). From intuitive user interfaces to robust backend systems, I enjoy crafting every part of a digital product.
-            </p>
-            <p>
-              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
-              I’m currently pursuing a degree in Computer Engineering, which strengthens my problem-solving abilities and understanding of system-level design, algorithms, and data structures.
-            </p>
-            <p>
-              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
-              Apart from coding, I continuously explore new technologies, keep up with industry trends, and enjoy creating content around web development and software engineering. I also actively engage with the developer community through LinkedIn and X.
-            </p>
-            <p>
-              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
-              When I’m not coding, you’ll find me exploring open-source projects, writing clean documentation, or helping others on their coding journey.
-            </p>
-            <p>
-              <span className="text-lg sm:text-xl text-violet-600">✧</span>{' '}
-              I’m always open to new challenges, whether it&apos;s collaborating on exciting projects, contributing to innovative teams, or building something meaningful from the ground up.
-            </p>
-          </div>
+          {/* Right: Key Stats */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 gap-6"
+          >
+            {[
+              { value: '3+', label: 'Full‑Stack Apps' },
+              { value: '15+', label: 'Projects Completed' },
+              { value: '1', label: 'Internship' },
+              { value: '8.0', label: 'CGPA (10)' },
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="p-6 bg-zinc-50 dark:bg-zinc-900 rounded-xl text-center border border-zinc-200 dark:border-zinc-800"
+              >
+                <div className="text-3xl font-bold text-violet-600">
+                  {stat.value}
+                </div>
+                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Projects */}
-      <Projects />
 
-      {/* Achievements */}
-      <Achievements />
 
-      {/* Contact Section */}
-      <section id="contact" className="px-6 py-20 dark:bg-zinc-950 text-center">
-        <h2 className="text-4xl font-bold mb-4">Contact</h2>
-        <p className="text-[#7843E9] text-2xl">---</p>
-        <div className="text-center mb-10 space-y-2">
-          <p className="text-xl text-zinc-800 dark:text-zinc-300">
-            Feel free to contact me directly:
-          </p>
 
-          {/* Phone */}
-          <div className="flex items-center justify-center gap-2 text-violet-700 font-semibold text-lg sm:text-xl">
-            <FaPhone className="text-lg text-sky-600" />
-            <a
-              href="tel:+917396633113"
-              className="hover:underline underline-offset-2"
-            >
-              +91 73966 33113
-            </a>
-          </div>
 
-          {/* Email */}
-          <div className="flex items-center justify-center gap-2 text-violet-700 font-semibold text-lg sm:text-xl">
-            <MdEmail className="text-2xl text-sky-600" />
-            <a
-              href="mailto:jaggujagadeesh447@gmail.com"
-              className="hover:underline underline-offset-2"
-            >
-              jagadeeshchakali15@gmail.com
-            </a>
-          </div>
 
-          <p className="text-lg text-zinc-700 dark:text-zinc-400">
-            <span className="text-red-500 text-xl font-semibold">Or</span> submit the form below and I will get back to you.
-          </p>
+
+      {/* Enhanced Projects Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <Projects />
+      </motion.div>
+
+      {/* Enhanced Achievements Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <Achievements />
+      </motion.div>
+
+      {/* Enhanced Contact Section */}
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 dark:from-zinc-950 relative overflow-hidden">
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+              Get&nbsp;In <span className="bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">Touch</span>
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-violet-600 to-purple-600 mx-auto rounded-full mb-8"></div>
+
+            <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-8">
+              Ready to bring your ideas to life? Let&nbsp;s start a conversation.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <Contact />
+          </motion.div>
         </div>
-
-
-
-
-        <Contact />
       </section>
 
-      {/* Footer */}
+      {/* Enhanced Footer */}
       <Footer />
+
+      {/* Scroll to Top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-40 w-12 h-12 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0, y: 100 }}
+            whileHover={{ scale: 1.1, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Scroll to top"
+          >
+            <FaArrowUp className="text-sm" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Loading Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 to-purple-600 transform-gpu z-50"
+        style={{
+          scaleX: scrollY / (document.documentElement.scrollHeight - window.innerHeight),
+          transformOrigin: '0%',
+        }}
+      />
     </div>
   );
 }
