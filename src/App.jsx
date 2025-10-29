@@ -6,12 +6,11 @@ import Projects from "./components/Projects.jsx";
 import Sidebar from "./components/Sidebar";
 import CvBtn from "./components/CvBtn.jsx";
 import { Typewriter } from 'react-simple-typewriter';
+import AboutImage from './assets/aboutImg.png'
 
 import { BsList } from "react-icons/bs";
-import { BiMoon, BiSun } from "react-icons/bi";
-import { FaPhone, FaArrowUp } from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
-import { HiSparkles } from "react-icons/hi";
+import {  BiMoon,  BiSun } from "react-icons/bi";
+import {  FaArrowUp } from "react-icons/fa6";
 
 import ProfilePic from "./assets/jaggu-logo.png";
 import Achievements from "./components/Achivements.jsx";
@@ -352,89 +351,79 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* Enhanced Skills Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <SkillsCarousel />
-      </motion.div>
-
       {/* Your existing About Section (already enhanced) */}
-      <section id="about" className="py-24 px-6 lg:px-12 bg-white dark:bg-zinc-950">
-        <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+      <section id="about" className="py-20 px-6 bg-white dark:bg-zinc-950">
+        <div className="max-w-5xl mx-auto">
 
-          {/* Left: Intro & Highlights */}
+          {/* Section Header */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="space-y-6"
+            className="mb-16"
           >
-            <h2 className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">
-              Hi, I’m Jagadeesh Chakali
+            <h2 className="text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
+              About Me
             </h2>
-            <div className="w-14 h-1 bg-violet-600 rounded mb-4"></div>
-            <p className="text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed">
-              A final-year <span className="font-semibold text-violet-600">B.Tech (CSE, IoT)</span> student at G. Pullaiah College, graduating in <span className="font-medium">2025</span>. I build full‑stack web apps and IoT solutions—combining <span className="font-medium text-violet-600">React.js</span>, <span className="font-medium text-violet-600">Node.js</span>, and <span className="font-medium text-violet-600">MongoDB</span>—to solve real‑world problems.
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-zinc-600 dark:text-zinc-300">
-              <li> Developed & deployed 3+ full‑stack apps (FocusMate, StayFinder, JagguBlogs)</li>
-              <li> Runner‑up at GDSC Hackathon (30+ teams)</li>
-              <li> Completed Udemy Full‑Stack Bootcamp & NPTEL Cloud/IIoT courses</li>
-              <li> Java Developer Intern – Amaravathi Institute (Jan–Mar ’24)</li>
-            </ul>
-            <motion.a
-              href="#contact"
-              className="inline-block mt-6 px-8 py-3 bg-violet-600 text-white font-medium rounded-lg shadow hover:bg-violet-700 transition"
-              whileHover={{ scale: 1.05 }}
-            >
-              Let’s Connect
-            </motion.a>
+            <div className="w-16 h-1 bg-violet-600 rounded"></div>
           </motion.div>
 
-          {/* Right: Key Stats */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 gap-6"
-          >
-            {[
-              { value: '3+', label: 'Full‑Stack Apps' },
-              { value: '15+', label: 'Projects Completed' },
-              { value: '1', label: 'Internship' },
-              { value: '8.0', label: 'CGPA (10)' },
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="p-6 bg-zinc-50 dark:bg-zinc-900 rounded-xl text-center border border-zinc-200 dark:border-zinc-800"
-              >
-                <div className="text-3xl font-bold text-violet-600">
-                  {stat.value}
-                </div>
-                <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                  {stat.label}
+          {/* Main Grid */}
+          <div className="grid md:grid-cols-5 gap-12 items-start">
+
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="md:col-span-2"
+            >
+              <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-violet-600 to-violet-700 overflow-hidden">
+                {/* Replace this with your actual image */}
+                <img
+                  src={AboutImage}
+                  alt="Jagadeesh Chakali"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </motion.div>
+
+            {/* Content */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="md:col-span-3 space-y-6"
+            >
+              <div>
+                <p>
+                  I'm Jagadeesh Chakali, a full-stack developer specializing in React and Node.js. I've developed
+                  multiple web applications including FocusMate and StayFinder, and placed 2nd at the GDSC Hackathon
+                  competing against 30+ teams. I'm passionate about creating user-friendly applications and constantly
+                  learning new technologies to stay ahead in the ever-evolving world of web development.
+
                 </p>
-              </motion.div>
-            ))}
-          </motion.div>
+              </div>
+
+              {/* CTA */}
+              <div className="pt-2">
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700 transition-all hover:scale-105"
+                >
+                  Get In Touch
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
-
-
-
-
-
-
 
       {/* Enhanced Projects Section */}
       <motion.div
@@ -445,6 +434,18 @@ export default function App() {
       >
         <Projects />
       </motion.div>
+
+
+      {/* Enhanced Skills Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <SkillsCarousel />
+      </motion.div>
+
 
       {/* Enhanced Achievements Section */}
       <motion.div
@@ -508,15 +509,6 @@ export default function App() {
           </motion.button>
         )}
       </AnimatePresence>
-
-      {/* Loading Progress Bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 to-purple-600 transform-gpu z-50"
-        style={{
-          scaleX: scrollY / (document.documentElement.scrollHeight - window.innerHeight),
-          transformOrigin: '0%',
-        }}
-      />
     </div>
   );
 }

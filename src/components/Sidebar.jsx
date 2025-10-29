@@ -14,8 +14,6 @@ const socialLinks = [
   { icon: <SlSocialLinkedin size={24} />, link: "https://www.linkedin.com/in/jagadeesh15/" },
   { icon: <FaXTwitter size={24} />, link: "https://x.com/JagguJagadieesh" },
   { icon: <SiLeetcode size={24} />, link: "https://leetcode.com/u/Jagadeesh02/" },
-  { icon: <CgInstagram size={24} />, link: "https://www.instagram.com/j.a.g.a.d.e.e.s.h_15/" },
-  { icon: <GoMail size={24} />, link: "mailto:jaggujagadeesh447@gmail.com" },
 ];
 
 const Sidebar = () => {
@@ -25,7 +23,7 @@ const Sidebar = () => {
     <>
       {/* Desktop Sidebar */}
       <motion.div
-        className="hidden sm:flex w-14 fixed left-0 top-1/4 text-black p-4 rounded-lg z-40 dark:text-white bg-transparent flex-col items-center gap-5"
+        className="hidden sm:flex w-14 fixed left-0 top-1/4 text-black p-4 rounded-lg z-40 dark:text-white bg-transparent flex-col items-center gap-10"
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
