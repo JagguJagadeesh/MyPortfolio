@@ -15,8 +15,8 @@ const HeroImageCard = () => {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, rotateX: 15 }}
                 animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-                transition={{ 
-                    duration: 1.2, 
+                transition={{
+                    duration: 1.2,
                     ease: "easeOut",
                     type: "spring",
                     stiffness: 120
@@ -30,7 +30,7 @@ const HeroImageCard = () => {
             >
                 {/* Card Shadow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-purple-600/20 rounded-2xl blur-xl scale-105 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
+
                 {/* Image Container */}
                 <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[22rem] md:h-[22rem] bg-gradient-to-br from-violet-500 to-purple-600 p-1 rounded-2xl shadow-2xl">
                     <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-xl overflow-hidden relative">
@@ -39,7 +39,7 @@ const HeroImageCard = () => {
                             alt="Jagadeesh Chakali"
                             className="w-full h-full object-cover object-top transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
                         />
-                        
+
                         {/* Hover Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-violet-600/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>

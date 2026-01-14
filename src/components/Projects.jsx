@@ -12,7 +12,7 @@ export default function ProjectsSection() {
         setIsLoading(true);
         // Simulate loading delay
         setTimeout(() => {
-            setVisibleProjects(prev => prev + 6); 
+            setVisibleProjects(prev => prev + 6);
             setIsLoading(false);
         }, 500);
     };
@@ -67,8 +67,8 @@ export default function ProjectsSection() {
                                 </h3>
 
                                 <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed mb-4">
-                                    {project.des.length > 100 
-                                        ? `${project.des.substring(0, 100)}...` 
+                                    {project.des.length > 100
+                                        ? `${project.des.substring(0, 100)}...`
                                         : project.des
                                     }
                                 </p>
@@ -128,7 +128,7 @@ export default function ProjectsSection() {
                                 </>
                             )}
                         </button>
-                        
+
                         {/* Progress Indicator */}
                         <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-3">
                             Showing {visibleProjects} of {data.length} projects

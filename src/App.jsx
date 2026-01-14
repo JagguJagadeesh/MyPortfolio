@@ -9,8 +9,8 @@ import { Typewriter } from 'react-simple-typewriter';
 import AboutImage from './assets/aboutImg.png'
 
 import { BsList } from "react-icons/bs";
-import {  BiMoon,  BiSun } from "react-icons/bi";
-import {  FaArrowUp } from "react-icons/fa6";
+import { BiMoon, BiSun } from "react-icons/bi";
+import { FaArrowUp } from "react-icons/fa6";
 
 import ProfilePic from "./assets/jaggu-logo.png";
 import Achievements from "./components/Achivements.jsx";
